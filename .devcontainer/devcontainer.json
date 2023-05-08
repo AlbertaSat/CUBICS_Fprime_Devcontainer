@@ -24,7 +24,8 @@
     "workspaceFolder": "/home/fprime-dev/${localWorkspaceFolderBasename}",
 
     "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+        "source=cubics_fprime_devcontainer-bashhistory,target=/commandhistory,type=volume"
     ],
 
     "customizations": {

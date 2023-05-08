@@ -6,6 +6,8 @@ FROM debian:bullseye-slim
 
 LABEL Name=cubics_fprime_devcontainer Version=0.0.1
 
+ARG USERNAME=fprime-dev
+
 #Setup OS environment
 RUN apt-get -y update && \
 	apt-get upgrade -y && \
@@ -34,6 +36,15 @@ RUN apt-get -y update && \
 	python3-pip \
 	#For using fprime tools within a virtual env as recommended in the fprime-community tutorials
 	python3-venv  
+
+#Setup a bash_history file for the frpime-dev user in this container. Local volume is added in the devcontainer.json file. See this for reference: 
+# https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+    && mkdir /commandhistory \
+    && touch /commandhistory/.bash_history \
+    && chown -R $USERNAME /commandhistory \
+    && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
+
 
 #TODO set environment variable for $USER to fprime-dev 
 
