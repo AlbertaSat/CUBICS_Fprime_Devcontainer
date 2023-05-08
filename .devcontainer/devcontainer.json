@@ -25,7 +25,8 @@
 
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
-        "source=cubics_fprime_devcontainer-bashhistory,target=/commandhistory,type=volume"
+        // "source=cubics_fprime_devcontainer-bashhistory,target=/commandhistory,type=volume",  //Mount for docker volume to record bash history
+        "source=${localWorkspaceFolder}/persistent,target=/home/fprime-dev/persistent,type=bind,consistency=cached" //Bind mount stores bash history in host machine dir
     ],
 
     "customizations": {
