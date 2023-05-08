@@ -6,12 +6,16 @@ FROM debian:bullseye-slim
 
 LABEL Name=cubics_fprime_devcontainer Version=0.0.1
 
+#Set the dockerfile arg username to fprime-dev and set the $USERNAME env variable in the container to fprime-dev
+ARG USERNAME=fprime-dev  
+ENV USERNAME=${USERNAME}
+
 #Setup OS environment
 RUN apt-get -y update && \
 	apt-get upgrade -y && \
 	#This creates a user named 'fprime-dev' and adds them to the sudo group, defines the name 
 	#  of the users login shell as /bin/bash , and changes the users password to 'fprime'
-	useradd -G "sudo" -s "/bin/bash" -m -U "fprime-dev" && echo "fprime-dev:fprime" | chpasswd && \
+	useradd -G "sudo" -s "/bin/bash" -m -U ${USERNAME} && echo ${USERNAME}":fprime" | chpasswd && \
 	apt-get install --no-install-recommends -y \
 	sudo \
 	git \
@@ -35,7 +39,21 @@ RUN apt-get -y update && \
 	#For using fprime tools within a virtual env as recommended in the fprime-community tutorials
 	python3-venv  
 
-#TODO set environment variable for $USER to fprime-dev 
+
+#BIND-MOUNT THE CONTAINER USERS BASH HISTORY TO A FILE ON THE USERS HOST MACHINE
+# Create a directory for the bind-mount and set ownership to the fprime-dev user
+RUN mkdir -p /home/$USERNAME/persistent && \
+    chown -R $USERNAME /home/$USERNAME/persistent && \
+    echo "source /home/$USERNAME/persistent/.bashrc" >> "/home/$USERNAME/.bashrc"
+
+# Add an entry in the .bashrc file to load the persistent .bashrc if it exists
+RUN echo 'if [ -f /home/$USERNAME/persistent/.bashrc ]; then source /home/$USERNAME/persistent/.bashrc; fi' >> /home/$USERNAME/.bashrc
+
+# Add an entry in the .bashrc file to store and load the persistent bash history, with timestamps 
+RUN echo 'export HISTFILE=/home/$USERNAME/persistent/.bash_history' >> /home/$USERNAME/.bashrc && \
+	echo "export HISTTIMEFORMAT='%m/%d/%y %T'" >> /home/$USERNAME/.bashrc && \
+    echo 'export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"' >> /home/$USERNAME/.bashrc
+
 
 #Setup 32bit ARM cross compiling packages in /opt/toolchains dir as per frpime tutorial example:
 # https://github.com/fprime-community/fprime-workshop-led-blinker/blob/main/docs/prerequisites.md

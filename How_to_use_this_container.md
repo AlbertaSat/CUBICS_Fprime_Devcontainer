@@ -3,6 +3,8 @@
 You must have vscode and docker installed on your computer.
 In vscode, open the extensions menu and search for "Dev Containers." Install the Dev Containers extension by Microsoft
 
+This docker image is configured to automatically write your command history to a folder called 'persistent' on your host machine. It does this using something called a bind-mount, which attaches a file or folder on your local machine to the docker container. You must ensure your host machine has this folder in the same parent folder alongside the .devcontainer folder. If this does not exist the docker build will fail, mentioning the source path for the requested mount does not exist. 
+
 Open the command pallete by hitting "F1" (and maybe the fxn key) on your keyboard. 
 Search for "Dev Containers" and select "Open folder in container"
 Navigate to this folder and open it. 
