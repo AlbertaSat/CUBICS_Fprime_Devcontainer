@@ -4,7 +4,9 @@
 #  and Roberts fprime example zip on slack 
 FROM debian:bullseye-slim
 
+# LABEL Name=cubics_fprime_devcontainer Version=0.0.1
 LABEL Name=cubics_fprime_devcontainer Version=0.0.1
+
 
 #Set the dockerfile arg username to fprime-dev and set the $USERNAME env variable in the container to fprime-dev
 ARG USERNAME=fprime-dev  
@@ -65,8 +67,9 @@ RUN mkdir -p /opt/toolchains && \
 	#Move file to the /opt/toolchains dir and extract 
 	mv gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf.tar.xz /opt/toolchains && \
 	tar -xvf /opt/toolchains/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf.tar.xz --strip-components=1 -C /opt/toolchains && \
-	#Setup build path environment variable 
-	export ARM_TOOLS_PATH=/opt/toolchains/bin
+	#Setup build path environment variable. This must be placed in bash otherwise it only exists in a temp shell instance
+	echo 'export ARM_TOOLS_PATH=/opt/toolchains/bin' >> /home/$USERNAME/.bashrc
+
 
 #Install pip setup tools
 RUN pip3 install -U setuptools setuptools_scm wheel pip
