@@ -18,3 +18,7 @@ docker system prune -a
 ```
 
 Once the docker container is built, open a new bash terminal by clicking + on the right in vscode.
+
+# Usage
+
+The root password is `fprime`
