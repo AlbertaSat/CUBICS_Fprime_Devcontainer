@@ -71,6 +71,8 @@ RUN mkdir -p /opt/toolchains && \
 	#Setup build path environment variable. This must be placed in bash otherwise it only exists in a temp shell instance
 	echo 'export ARM_TOOLS_PATH=/opt/toolchains/bin' >> /home/$USERNAME/.bashrc
 
+#This path needs to be added if we are to use fprime-util not in a venv. Sometimes PIP installs user tools here. 
+RUN echo 'export PATH=$PATH:$HOME/.local/bin' >> /home/$USERNAME/.bashrc  
 
 #Install pip setup tools
 RUN pip3 install -U setuptools setuptools_scm wheel pip
