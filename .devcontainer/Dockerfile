@@ -40,7 +40,8 @@ RUN apt-get -y update && \
 	python3-pip \
 	#For using fprime tools within a virtual env as recommended in the fprime-community tutorials
 	python3-venv \
-	ssh
+	ssh \
+	clang-format
 
 
 #BIND-MOUNT THE CONTAINER USERS BASH HISTORY TO A FILE ON THE USERS HOST MACHINE

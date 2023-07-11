@@ -38,7 +38,9 @@
                 "ms-azuretools.vscode-docker",
                 "VisualStudioExptTeam.vscodeintellicode",
                 "ms-python.python",
-                "unlv-team5.fpptools"
+                "unlv-team5.fpptools",
+                "github.copilot",
+                "xaver.clang-format"
             ]
         }
     }
